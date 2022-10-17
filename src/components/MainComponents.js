@@ -43,6 +43,17 @@ class Main extends Component {
             )
         }
 
+        const DishWithId = () => {
+            const params = useParams();
+            return (
+                <DishDetail 
+                dish={this.state.dishes.filter((dish) => dish.id === parseInt(params.dishId,10))[0]}
+                comment={this.state.comments.filter((comment) => comment.dishId === parseInt(params.dishId, 10))}
+
+                />
+            )
+        }
+
         return (
             
             <div>
@@ -52,6 +63,7 @@ class Main extends Component {
                     <Route path='/' element={<HomePage />} />
                     <Route exact path='/menu' element={<Menu dishes={this.state.dishes} />} />
                     <Route exact path='/contactus' element={<Contact />} />
+                    <Route path='/menu/:dishId' element={<DishWithId />} />
                 </Routes>
                 {/* <Menu dishes={this.state.dishes} onClick={(dishId) => this.onDishSelect(dishId)} /> */}
                 {/* <DishDetail dish={this.state.dishes.filter((dish) => dish.id === this.state.selectedDish)[0]} /> */}
