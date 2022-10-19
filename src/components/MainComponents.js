@@ -7,6 +7,7 @@ import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import Home from './HomeComponent';
 import Contact from './ContactComponent';
+import About from './AboutComponent'
 
 import { DISHES } from '../shared/dishes';
 import { COMMENTS } from '../shared/comments';
@@ -62,8 +63,10 @@ class Main extends Component {
                 <Routes>
                     <Route path='/' element={<HomePage />} />
                     <Route exact path='/menu' element={<Menu dishes={this.state.dishes} />} />
+                    {/* Ex30 from here */}
                     <Route exact path='/contactus' element={<Contact />} />
                     <Route path='/menu/:dishId' element={<DishWithId />} />
+                    <Route exact path='/aboutus' element={<About leaders={this.state.leaders} />} />
                 </Routes>
                 {/* <Menu dishes={this.state.dishes} onClick={(dishId) => this.onDishSelect(dishId)} /> */}
                 {/* <DishDetail dish={this.state.dishes.filter((dish) => dish.id === this.state.selectedDish)[0]} /> */}
