@@ -1,10 +1,12 @@
-import React, { Component   } from 'react'
-import { Card , CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap'
+import React, { Component } from 'react'
+import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import moment from 'moment'
 
 import { Link } from 'react-router-dom';
+import CommentForm from './CommentFormComponent';
+import { Loading } from './LoadingComponent'
 
-function RenderDish({dish}) {
+function RenderDish({ dish }) {
     return (
         <Card>
             <CardImg top src={dish.image} alt={dish.name} />
@@ -16,7 +18,7 @@ function RenderDish({dish}) {
     )
 }
 
-function RenderComments({comments}) {
+function RenderComments({ comments, addComment, dishId }) {
     console.log("comment>>>", comments)
     if (comments == null) {
         return (
@@ -28,17 +30,40 @@ function RenderComments({comments}) {
             <p>{value.comment}</p>
             <p>-- {value.author}, {moment(value.date).format("MMM DD, YYYY")}</p>
         </li>
-    )) 
+    ))
     return (
-        <ul className='list-unstyled'>
-            {commentList}
-        </ul>
+        <div>
+            <h4>Comments</h4>
+
+            <ul className='list-unstyled'>
+                {commentList}
+            </ul>
+            
+            <CommentForm dishId={dishId} addComment={addComment}/>
+        </div>
     );
 }
 
 const DishDetail = (props) => {
-    console.log("chekc props>>>" ,props)
-    if (props.dish != null) {
+    console.log("chekc props>>>", props)
+
+    if (props.isLoading) {
+        return(
+            <div className='container'>
+                <div className='row'>
+                    <h4>{props.errMess}</h4>
+                </div>
+            </div>
+        )
+    } else if (props.errMess) {
+        return (
+            <div className='container'>
+                <div className='row'>
+                    <h4>{props.errMess}</h4>
+                </div>
+            </div>
+        )
+    } else if (props.dish != null) {
         return (
             <div className='container'>
                 <div className='row'>
@@ -53,11 +78,13 @@ const DishDetail = (props) => {
                 </div>
                 <div className='row'>
                     <div className='col-12 col-md-5 m-1'>
-                        {<RenderDish dish = {props.dish} />}
+                        {<RenderDish dish={props.dish} />}
                     </div>
                     <div className='col-12 col-md-5 m-1'>
-                        <h4>Comments</h4>
-                        {<RenderComments comments = {props.comment}/>}
+                        {<RenderComments comments={props.comment} 
+                            addComment={props.addComment}
+                            dishId = {props.dish.id}
+                        />}
                     </div>
                 </div>
             </div>
@@ -115,7 +142,7 @@ const DishDetail = (props) => {
 //         } else {
 //             return (<div></div>)
 //         }
-        
+
 //     }
 // }
 
